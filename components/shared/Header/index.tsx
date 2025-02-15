@@ -16,10 +16,10 @@ function Header() {
                 height={50}
                 priority={true}
               />
+              <span className="hidden font-bold tedxt-2xl ml-3 lg:block cursor-pointer">
+                {APP_NAME}
+              </span>
             </Link>
-            <span className="hidden font-bold tedxt-2xl ml-3 lg:block">
-              {APP_NAME}
-            </span>
           </div>
           <Menu />
         </div>
