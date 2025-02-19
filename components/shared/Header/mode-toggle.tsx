@@ -25,6 +25,7 @@ const ModeToggle = () => {
     <DropdownMenu>
       <DropdownMenuTrigger>
         <Button
+          asChild
           variant="ghost"
           className="focus-visible:ring-0 focues-visible:ring-offset-0"
         >

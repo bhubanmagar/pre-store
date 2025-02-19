@@ -1,12 +1,13 @@
 import React from "react";
 import ProductCard from "./product-card";
+import { Product } from "@/types";
 
 const PeoductList = ({
   data,
   title,
   limit,
 }: {
-  data: any;
+  data: Product[];
   title?: string;
   limit?: number;
 }) => {
@@ -17,7 +18,7 @@ const PeoductList = ({
       {data.length > 0 ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {limitData.map((product: any) => {
+            {limitData.map((product: Product) => {
               return (
                 <>
                   <ProductCard key={product.slug} product={product} />
