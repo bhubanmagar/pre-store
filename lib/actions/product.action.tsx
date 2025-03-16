@@ -1,6 +1,6 @@
 "use server";
 import { PrismaClient } from "@prisma/client";
-import { convertToNormalObject } from "@/lib/utils";
+import { convertToPlainObject } from "../utils";
 import { LATEST_PRODUCT_LIMIT } from "../constants";
 export const getLatestProducts = async () => {
   const prisma = new PrismaClient();
@@ -8,5 +8,5 @@ export const getLatestProducts = async () => {
     take: LATEST_PRODUCT_LIMIT,
     orderBy: { createdAt: "desc" },
   });
-  return convertToNormalObject(data);
+  return convertToPlainObject(data);
 };

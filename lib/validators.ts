@@ -3,12 +3,22 @@ import { formatNumbersWithDecimal } from "./utils";
 
 //Schema for insertin Products
 
-const Currency = z
-  .string()
-  .refine(
-    (value) => /^\d+(\.\d{2})?$/.test(formatNumbersWithDecimal(Number(value))),
-    "price must have  exactly two decmal places"
-  );
+const Currency = z.union([
+  z
+    .string()
+    .refine(
+      (value) =>
+        /^\d+(\.\d{2})?$/.test(formatNumbersWithDecimal(Number(value))),
+      "Price must have exactly two decimal places"
+    ),
+  z
+    .number()
+    .refine(
+      (value) => /^\d+(\.\d{2})?$/.test(formatNumbersWithDecimal(value)),
+      "Price must have exactly two decimal places"
+    ),
+]);
+
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 Character"),
   slug: z.string().min(3, "Slug must be at least 3 Character"),

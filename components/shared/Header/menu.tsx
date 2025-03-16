@@ -10,44 +10,49 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 
-const menu = () => {
+const Menu = () => {
   return (
-    <>
-      <div className="flex justify-end gap-3">
-        <nav className="hidden md:flex  w-full  max-w-xs gap-1">
-          <ModeToggle />
-          <Button asChild variant="ghost">
-            <Link href="/cart">
-              <ShoppingCart /> cart
-            </Link>
-          </Button>
-          <Button asChild>
-            <Link href="/sign-in">
+    <div className="flex justify-end gap-3">
+      <nav className="hidden md:flex w-full max-w-xs gap-1">
+        <ModeToggle />
+        <Button asChild variant="ghost">
+          <Link href="/cart">
+            <span className="flex items-center gap-1">
+              <ShoppingCart /> Cart
+            </span>
+          </Link>
+        </Button>
+        <Button asChild>
+          <Link href="/sign-in">
+            <span className="flex items-center gap-1">
               <User /> Sign In
-            </Link>
-          </Button>
-        </nav>
-        <div className="md:hidden ">
-          <Sheet>
-            <SheetTrigger className="align-middle">
-              {" "}
+            </span>
+          </Link>
+        </Button>
+      </nav>
+      <div className="md:hidden">
+        <Sheet>
+          <SheetTrigger asChild>
+            <button className="align-middle">
               <EllipsisVertical />
-            </SheetTrigger>
-            <SheetContent className="flex flex-col items-start">
-              <SheetTitle>Menu</SheetTitle>
-              <ModeToggle />
-              <Button asChild variant="ghost">
-                <Link href="/cart">
-                  <ShoppingCart /> cart
-                </Link>
-              </Button>
-              <SheetDescription></SheetDescription>
-            </SheetContent>
-          </Sheet>
-        </div>
+            </button>
+          </SheetTrigger>
+          <SheetContent className="flex flex-col items-start">
+            <SheetTitle>Menu</SheetTitle>
+            <ModeToggle />
+            <Button asChild variant="ghost">
+              <Link href="/cart">
+                <span className="flex items-center gap-1">
+                  <ShoppingCart /> Cart
+                </span>
+              </Link>
+            </Button>
+            <SheetDescription />
+          </SheetContent>
+        </Sheet>
       </div>
-    </>
+    </div>
   );
 };
 
-export default menu;
+export default Menu;
