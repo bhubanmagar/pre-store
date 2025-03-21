@@ -9,3 +9,9 @@ export const getLatestProducts = async () => {
   });
   return convertToPlainObject(data);
 };
+
+// get product by it's slug
+
+export const getProductsBySlug = async (slug: string) => {
+  return prisma.product.findFirst({ where: { slug: slug } });
+};
