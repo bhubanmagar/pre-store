@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const NotFoundPage = () => {
   const [position, setPosition] = useState({ x: "50%", y: "50%" });
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     setPosition({ x: `${e.clientX}px`, y: `${e.clientY}px` });
   };
   return (
