@@ -22,7 +22,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         </CardHeader>
         <CardContent className="p-4 grid gap-4">
           <div className="text-xs">{product.brand}</div>
-          <Link href={`/product/ ${product.slug}`}>
+          <Link href={`/products/${product.slug}`}>
             <h2 className="text-xs font-medium">{product.name}</h2>
           </Link>
           <div className="flex-between">
