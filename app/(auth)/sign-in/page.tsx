@@ -11,12 +11,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { APP_NAME } from "@/lib/constants";
 import CredentialsSignInFrom from "./credentials-signin-form";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "sign-in",
 };
 
-function SignInPage() {
+async function SignInPage() {
+  const session = await auth();
+  if (session) {
+    return redirect("/");
+  }
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>

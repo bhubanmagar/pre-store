@@ -5,10 +5,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { signInDefaultValues } from "@/lib/constants";
 import Link from "next/link";
+import { SignInWithCredentials } from "@/lib/actions/user.action";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 
 function CredentialsSignInFrom() {
+  const [data, action] = useActionState(SignInWithCredentials, {
+    success: false,
+    message: "",
+  });
+
+  const SignInButton = () => {
+    const { pending } = useFormStatus();
+    return (
+      <Button disabled={pending} className="w-full" variant="default">
+        {pending ? "Signing In" : "Sign In"}
+      </Button>
+    );
+  };
   return (
-    <form className="space-y-6">
+    <form action={action} className="space-y-6">
       <div>
         <Label htmlFor="email">Email</Label>
         <Input
@@ -32,10 +48,13 @@ function CredentialsSignInFrom() {
         />
       </div>
       <div>
-        <Button className="w-full" variant="default">
-          Sign In
-        </Button>
+        <SignInButton />
       </div>
+
+      {data && !data.success && (
+        <div className="text-center text-destructive">{data.message}</div>
+      )}
+
       <div className="text-center text-sm text-muted-foreground">
         Dont&apos;t have accout?
         <Link href="/sign-up" target="_self" className="link">
