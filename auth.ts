@@ -10,7 +10,7 @@ export const config = {
     error: "/sign-in",
   },
   session: {
-    strategy: "database",
+    strategy: "jwt",
     maxAge: 60 * 60 * 24 * 30,
   },
   adapter: PrismaAdapter(prisma),
