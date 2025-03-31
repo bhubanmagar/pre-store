@@ -36,7 +36,6 @@ function SignUPFrom() {
           id="name"
           name="name"
           type="text"
-          required
           defaultValue={signUpDefaultValues.email}
           autoComplete="name"
         />
@@ -46,8 +45,7 @@ function SignUPFrom() {
         <Input
           id="email"
           name="email"
-          type="email"
-          required
+          type="text"
           defaultValue={signUpDefaultValues.email}
           autoComplete="email"
         />
