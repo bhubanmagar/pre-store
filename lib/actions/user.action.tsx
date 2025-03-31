@@ -4,6 +4,7 @@ import { prisma } from "@/db/prisma";
 import { hashSync } from "bcrypt-ts";
 import { isRedirectError } from "next/dist/client/components/redirect-error";
 import { signInFormSchema, SignUpFromSchema } from "../validators";
+import { fromatErrors } from "../utils";
 
 // signin the user credentials
 export async function SignInWithCredentials(
@@ -31,16 +32,8 @@ export async function signOutUser() {
   await signOut();
 }
 
-interface SignUpResponseProps {
-  success: boolean;
-  message: string;
-}
-
 // signup user action
-export async function signUpUser(
-  prevState: SignUpResponseProps,
-  formData: FormData
-): Promise<SignUpResponseProps> {
+export async function signUpUser(prevState: unknown, formData: FormData) {
   try {
     const user = await SignUpFromSchema.parse({
       name: formData.get("name"),
@@ -60,10 +53,11 @@ export async function signUpUser(
     await signIn("credentials", { email: user.email, password: plainPassword });
     return { success: true, message: "User Registered Sucessfully!" };
   } catch (error) {
+    // console.log(error.name);
     if (isRedirectError(error)) {
       throw error;
     } else {
-      return { success: false, message: "User wasn't Registered" };
+      return { success: false, message: fromatErrors(error) };
     }
   }
 }
