@@ -55,7 +55,7 @@ export const SignUpFromSchema = z
 
 // cart schema
 export const cartItemSchema = z.object({
-  productID: z.string().min(1, "Product is Required"),
+  productId: z.string().min(1, "Product is Required"),
   name: z.string().min(1, "Name is Required"),
   slug: z.string().min(1, "Slug is Required"),
   qty: z.number().int().nonnegative("Quantity must be positive"),
