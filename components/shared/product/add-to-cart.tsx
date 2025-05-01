@@ -4,8 +4,8 @@ import { addItemToCart } from "@/lib/actions/cart.action";
 import { Plus } from "lucide-react";
 import { CartItem } from "@/types";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
-import { ToastAction } from "../ui/toast";
+import { Button } from "../../ui/button";
+import { ToastAction } from "../../ui/toast";
 
 export const AddToCart = ({ items }: { items: CartItem }) => {
   const router = useRouter();
