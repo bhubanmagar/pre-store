@@ -1,10 +1,29 @@
 "use server";
 import { cookies } from "next/headers";
 import { CartItem } from "@/types";
-import { convertToPlainObject, fromatErrors } from "../utils";
+import { convertToPlainObject, fromatErrors, round2 } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
-import { cartItemSchema } from "../validators";
+import { cartItemSchema, insertCartSchema } from "../validators";
+import { revalidatePath } from "next/cache";
+
+// calculate cart prices
+const calcPrices = (items: CartItem[]) => {
+  const itemsPrice = round2(
+      items.reduce((acc, items) => acc + Number(items.price) * items.qty, 0)
+    ),
+    shippingPrice = round2(itemsPrice > 100 ? 0 : 10),
+    taxPrice = round2(0.15 * itemsPrice),
+    totalPrice = round2(itemsPrice + shippingPrice + taxPrice);
+
+  return {
+    itemsPrice: itemsPrice.toFixed(2),
+    shippingPrice: shippingPrice.toFixed(2),
+    taxPrice: taxPrice.toFixed(2),
+    totalPrice: totalPrice.toFixed(2),
+  };
+};
+
 export async function addItemToCart(data: CartItem) {
   try {
     // Check for cart cookie
@@ -25,19 +44,34 @@ export async function addItemToCart(data: CartItem) {
       where: { id: item.productId },
     });
 
-    // Testing
-    console.log({
-      "session-Cart_Id": sessionCartId,
-      "use Id ": userId,
-      "cart Item": item,
-      "product-details": product,
-    });
+    if (!product) throw new Error("Product not Found");
 
-    return {
-      success: true,
-      message: "Item added to cart",
-    };
+    if (!cart) {
+      // crate new cart
+      const newCart = insertCartSchema.parse({
+        userId: userId,
+        items: [item],
+        sessionCartId: sessionCartId,
+        ...calcPrices([item]),
+      });
+      // Add to database
+      await prisma.cart.create({
+        data: newCart,
+      });
+
+      // Revalidate Product page
+      revalidatePath(`/product/${product.slug}`);
+
+      // success message
+      return {
+        success: true,
+        message: "Item added to cart",
+      };
+    } else {
+      // add items to existing cart of user
+    }
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       message: fromatErrors(error),
