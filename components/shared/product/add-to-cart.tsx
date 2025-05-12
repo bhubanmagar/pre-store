@@ -7,7 +7,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "../../ui/button";
 import { ToastAction } from "../../ui/toast";
 
-
 export const AddToCart = ({ items }: { items: CartItem }) => {
   const router = useRouter();
   const { toast } = useToast();
@@ -23,7 +22,7 @@ export const AddToCart = ({ items }: { items: CartItem }) => {
     }
     // handle success add to cart
     toast({
-      description: `${items.name} added to cart`,
+      description: res.message,
       action: (
         <ToastAction
           className="bg-primary text-black hover:text-white  hover:bg-gray-800"
