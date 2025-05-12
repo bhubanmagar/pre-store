@@ -6,7 +6,6 @@ import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators";
 import { revalidatePath } from "next/cache";
-import { preloadStyle } from "next/dist/server/app-render/entry-base";
 import { Prisma } from "@prisma/client";
 
 // calculate cart prices
