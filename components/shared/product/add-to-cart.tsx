@@ -1,13 +1,19 @@
 "use client";
 import { useToast } from "@/hooks/use-toast";
-import { addItemToCart } from "@/lib/actions/cart.action";
-import { Plus } from "lucide-react";
-import { CartItem } from "@/types";
+import { addItemToCart, removeItemsFromCart } from "@/lib/actions/cart.action";
+import { Cart, CartItem } from "@/types";
+import { Minus, Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../../ui/button";
 import { ToastAction } from "../../ui/toast";
 
-export const AddToCart = ({ items }: { items: CartItem }) => {
+export const AddToCart = ({
+  cart,
+  items,
+}: {
+  cart?: Cart;
+  items: CartItem;
+}) => {
   const router = useRouter();
   const { toast } = useToast();
 
@@ -34,9 +40,34 @@ export const AddToCart = ({ items }: { items: CartItem }) => {
       ),
     });
   };
-  return (
-    <Button className="w-full" type="button" onClick={handleAddToCart}>
-      <Plus /> Add to Cart
-    </Button>
+  // handle remove item from cart function
+  const handleRemoveFromCart = async () => {
+    const res = await removeItemsFromCart(items.productId);
+    toast({
+      variant: res.success ? "default" : "destructive",
+      description: res.message,
+    });
+    return;
+  };
+
+  // check if item is in cart
+  const existItem =
+    cart && cart.items.find((x) => x.productId === items.productId);
+  return existItem ? (
+    <>
+      <Button type="button" variant="outline" onClick={handleRemoveFromCart}>
+        <Minus className="h-4 w-4" />
+      </Button>
+      <span className="px-2">{existItem.qty}</span>
+      <Button type="button" variant="outline" onClick={handleAddToCart}>
+        <Plus className="h-4 w-4" />
+      </Button>
+    </>
+  ) : (
+    <>
+      <Button className="w-full" type="button" onClick={handleAddToCart}>
+        <Plus /> Add to Cart
+      </Button>
+    </>
   );
 };
