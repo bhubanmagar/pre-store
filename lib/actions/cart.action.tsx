@@ -1,7 +1,7 @@
 "use server";
 import { cookies } from "next/headers";
 import { CartItem } from "@/types";
-import { convertToPlainObject, fromatErrors, round2 } from "../utils";
+import { convertToPlainObject, formatError, round2 } from "../utils";
 import { auth } from "@/auth";
 import { prisma } from "@/db/prisma";
 import { cartItemSchema, insertCartSchema } from "../validators";
@@ -114,7 +114,7 @@ export async function addItemToCart(data: CartItem) {
     console.log(error);
     return {
       success: false,
-      message: fromatErrors(error),
+      message: formatError(error),
     };
   }
 }
@@ -206,7 +206,7 @@ export async function removeItemsFromCart(productId: string) {
   } catch (error) {
     return {
       success: false,
-      message: fromatErrors(error),
+      message: formatError(error),
     };
   }
 }

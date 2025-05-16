@@ -16,3 +16,11 @@ export const signUpDefaultValues = {
   password: "",
   confirmPassword: "",
 };
+
+export const shippingAdressDefaultValue = {
+  fullName: "",
+  streetAdress: "",
+  city: "",
+  postalCode: "",
+  country: "",
+};
