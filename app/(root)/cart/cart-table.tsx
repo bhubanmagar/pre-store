@@ -1,23 +1,23 @@
 "use client";
-import { Cart } from "@/types";
-import { useRouter } from "next/navigation";
-import { useToast } from "@/hooks/use-toast";
-import { useTransition } from "react";
-import { addItemToCart, removeItemsFromCart } from "@/lib/actions/cart.action";
-import { ArrowRight, Divide, Loader, Minus, Plus } from "lucide-react";
-import { formatCurrency } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Table,
   TableBody,
+  TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  TableCell,
 } from "@/components/ui/table";
+import { useToast } from "@/hooks/use-toast";
+import { addItemToCart, removeItemsFromCart } from "@/lib/actions/cart.action";
+import { formatCurrency } from "@/lib/utils";
+import { Cart } from "@/types";
+import { ArrowRight, Loader, Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
+import { useTransition } from "react";
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
   const router = useRouter();
