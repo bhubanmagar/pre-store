@@ -4,6 +4,7 @@ import { compareSync } from "bcrypt-ts";
 import type { NextAuthConfig } from "next-auth";
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { cookies } from "next/headers";
 export const config = {
   pages: {
     signIn: "/sign-in",
@@ -68,6 +69,7 @@ export const config = {
     async jwt({ token, user, trigger, session }: any) {
       // add user field to token
       if (user) {
+        token.id = user.id;
         token.role = user.role;
         // if user has no name then use email
         if (user.name === "NO_NAME") {
@@ -79,6 +81,33 @@ export const config = {
           });
         }
       }
+
+      if (trigger === "signIn" || trigger === " signUp") {
+        const cookiesObject = await cookies();
+        const sessionCartId = cookiesObject.get("sessionCartId")?.value;
+        if (sessionCartId) {
+          const sessionCart = await prisma.cart.findFirst({
+            where: { sessionCartId },
+          });
+          if (sessionCart) {
+            // delete current use cart
+            await prisma.cart.deleteMany({
+              where: { userId: user.id },
+            });
+          }
+          // assign new cart
+          await prisma.cart.update({
+            where: { id: sessionCart?.id },
+            data: { userId: user.id },
+          });
+        }
+      }
+
+      // Handles if session update
+      if (session?.user.name && trigger === "update") {
+        token.name = session?.user.name;
+      }
+
       return token;
     },
   },
