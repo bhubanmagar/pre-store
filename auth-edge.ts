@@ -40,6 +40,22 @@ export const config = {
       return session;
     },
     authorized({ request, auth }: any) {
+      // Array of Regx patterns of paths we want to protect
+      const protectedPaths = [
+        /\/shipping-adress/,
+        /\/payment-method/,
+        /\/place-order/,
+        /\/profile/,
+        /\/user\/(.*)/,
+        /\/order\/(.*)/,
+        /\/admin/,
+      ];
+
+      // Get pathname from the request URL object
+      const { pathname } = request.nextUrl;
+      // Check if user is not authenticated and acessing protected routes
+      if (!auth && protectedPaths.some((p) => p.test(pathname))) return false;
+
       // check for the session cart cookie
       if (!request.cookies.get("sessionCartId")) {
         // Generate new Session cart id Cookie
