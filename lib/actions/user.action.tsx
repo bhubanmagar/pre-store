@@ -7,9 +7,11 @@ import {
   shippingAdressSchema,
   signInFormSchema,
   SignUpFromSchema,
+  paymentMethodsSchema,
 } from "../validators";
 import { ShippingAdress } from "@/types";
 import { formatError } from "../utils";
+import { z } from "zod";
 
 // signin the user credentials
 export async function SignInWithCredentials(
@@ -94,6 +96,36 @@ export async function updateUserAdress(data: ShippingAdress) {
     return {
       success: true,
       message: "User Updated Successfully!",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
+
+// update user's payment method
+export async function updateUserPaymentMethod(
+  data: z.infer<typeof paymentMethodsSchema>
+) {
+  try {
+    const session = await auth();
+    const currentUser = await prisma.user.findFirst({
+      where: { id: session?.user?.id },
+    });
+    if (!currentUser) throw new Error("User not found");
+
+    const paymentMethod = paymentMethodsSchema.parse(data);
+    await prisma.user.update({
+      where: {
+        id: currentUser.id,
+      },
+      data: { paymentMethod: paymentMethod.type },
+    });
+    return {
+      success: true,
+      message: "User Updated Sucessfully",
     };
   } catch (error) {
     return {
