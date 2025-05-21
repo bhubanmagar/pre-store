@@ -26,7 +26,8 @@ export const shippingAdressDefaultValue = {
 };
 
 export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
-  ? process.env.PAYMENT_METHODS.split(", ")
-  : ["PayPal, Strip, CashOnDelivery"];
+  ? process.env.PAYMENT_METHODS.split(",").map((method) => method.trim())
+  : ["PayPal", "Stripe", "CashOnDelivery"];
+
 export const DEFAULT_PAYMENT_METHOD =
   process.env.DEFAULT_PAYMENT_METHOD || "PayPal";
