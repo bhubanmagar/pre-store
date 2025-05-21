@@ -109,6 +109,7 @@ export async function updateUserAdress(data: ShippingAdress) {
 export async function updateUserPaymentMethod(
   data: z.infer<typeof paymentMethodsSchema>
 ) {
+  console.log(data);
   try {
     const session = await auth();
     const currentUser = await prisma.user.findFirst({
@@ -123,11 +124,13 @@ export async function updateUserPaymentMethod(
       },
       data: { paymentMethod: paymentMethod.type },
     });
+
     return {
       success: true,
       message: "User Updated Sucessfully",
     };
   } catch (error) {
+    console.log(error);
     return {
       success: false,
       message: formatError(error),
